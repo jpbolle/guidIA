@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuidIA - Panneau Latéral</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- En-tête fixe -->
+    <header class="header">
+        <div class="px-4 py-3">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h1 class="text-xl font-bold text-white">🤖 GuidIA</h1>
+                    <p class="text-white text-sm opacity-80">Cadre des Usages IA et numériques</p>
+                </div>
+                <div class="text-white text-xs opacity-70">
+                    CNDD
+                </div>
+            </div>
+            
+            <!-- Navigation par onglets -->
+            <nav class="relative">
+                <div class="flex space-x-0">
+                    <button class="tab-button active flex-1 py-3 px-4 text-white font-medium text-sm rounded-t-lg relative"
+                            data-tab="charte">
+                        📋 Pratiques IA
+                    </button>
+                    <button class="tab-button flex-1 py-3 px-4 text-white font-medium text-sm rounded-t-lg relative"
+                            data-tab="code">
+                        ⚖️ Code d'usage
+                    </button>
+                    <button class="tab-button flex-1 py-3 px-4 text-white font-medium text-sm rounded-t-lg relative"
+                            data-tab="referencement">
+                        🔍 Référencement
+                    </button>
+                </div>
+                <div class="tab-indicator" id="tabIndicator"></div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contenu des onglets -->
+    <main class="tab-content">
+        <!-- Onglet Charte IA -->
+        <div id="charte" class="tab-pane active">
+            <div class="p-4">
+                <div class="mb-6">
+                    <div class="mb-2">
+                        <label for="matiere-select" class="block text-sm font-semibold text-gray-700">
+                            Choisissez une matière :
+                        </label>
+                    </div>
+                    <select id="matiere-select" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white text-sm">
+                        <option value="">-- Sélectionnez une matière --</option>
+                    </select>
+                </div>
+
+                <div id="results-container" class="hidden">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                        <h2 id="selected-matiere" class="text-lg font-bold text-gray-800 mb-4 text-center border-b border-gray-300 pb-2"></h2>
+                        <div id="competences-container" class="space-y-4">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="loading-message" class="text-center text-gray-500 py-8">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500 mx-auto mb-2"></div>
+                    Chargement des données...
+                </div>
+
+                <div id="error-message" class="hidden text-center text-red-500 py-8 bg-red-50 rounded-lg border border-red-200">
+                </div>
+            </div>
+        </div>
+
+        <!-- Onglet Référencement -->
+        <div id="referencement" class="tab-pane">
+            <div class="p-4 h-full flex items-center justify-center">
+                <div class="text-center text-gray-500">
+                    <div class="text-4xl mb-4">🔍</div>
+                    <h3 class="text-lg font-semibold mb-2">Référencement</h3>
+                    <p class="text-sm">Cette section sera développée prochainement.</p>
+                    <p class="text-xs mt-2 opacity-70">Outils et ressources de référencement IA</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Onglet Code d'usage -->
+        <div id="code" class="tab-pane">
+            <div class="p-4">
+                <h2 class="text-lg font-bold text-orange-700 mb-4 border-b border-gray-300 pb-2">Cadrages du professeur</h2>
+
+                <p class="text-sm text-gray-700 mb-2">Tes professeurs peuvent te permettre d'utiliser l'IA dans tes travaux. Trois icônes sont possibles:</p>
+
+                <div class="mb-2">
+                    <img src="https://drive.google.com/thumbnail?id=1TWnWO7_6KF8l_i4inGzLn6kIehchN3Sy&sz=w1000"
+                         alt="Cadrages des usages IA"
+                         class="w-full max-w-full h-auto rounded-lg shadow-sm border border-gray-200">
+                </div>
+
+                <ul class="list-disc text-sm text-gray-700 space-y-2 mb-6 ml-6 pl-4">
+                    <li><strong>Non recours à l'IA:</strong> dans ce cas, tu es invité à ne pas utiliser pour des raisons pédagogiques l'IA</li>
+                    <li><strong>Aide de l'IA:</strong> dans ce cas, tu peux l'utiliser selon les consignes ou non du professeur</li>
+                    <li><strong>Généré par l'IA:</strong> tu peux demander à l'IA de faire une tâche à ta place (usage rare...)</li>
+                </ul>
+
+                <hr class="border-gray-300 mb-4">
+                <br>
+                <br>
+                <h3 class="text-md font-bold text-orange-700 mb-3 border-b border-gray-300 pb-2">Tampons de l'IA</h3>
+
+                <p class="text-sm text-gray-700 mb-4">Que l'usage de l'IA soit autorisé ou non, tu dois désormais te montrer transparent.e et indiquer si tu as utilisé l'IA ou non et quel a été ton usage de l'IA (aide à la reformulation, aide à la compréhension, etc.)</p>
+                <p class="text-sm text-gray-700 mb-4">Pour ce faire, copie-colle l'une des icônes ci-dessous et place-la au bon endroit dans ton travail:</p>
+
+                <div class="flex gap-4 justify-center mb-4">
+                    <div class="text-center">
+                        <img src="https://drive.google.com/thumbnail?id=1Gqede404Yfc7FbgddUUaXhVs5zZFccal&sz=w1000"
+                             alt="Tampon IA non utilisée"
+                             class="tampon-image w-16 h-16 cursor-pointer border border-gray-300 rounded p-1 hover:border-orange-500 transition-colors"
+                             title="Cliquer pour copier">
+                    </div>
+                    <div class="text-center">
+                        <img src="https://drive.google.com/thumbnail?id=1atLNR61DocVz-f2gJ5r14CpeeqSHJTl-&sz=w1000"
+                             alt="Tampon IA aide"
+                             class="tampon-image w-16 h-16 cursor-pointer border border-gray-300 rounded p-1 hover:border-orange-500 transition-colors"
+                             title="Cliquer pour copier">
+                    </div>
+                    <div class="text-center">
+                        <img src="https://drive.google.com/thumbnail?id=1a3Pc6YoZoLLZ0DkBWw2cMJ0LicGtkfCC&sz=w1000"
+                             alt="Tampon IA généré"
+                             class="tampon-image w-16 h-16 cursor-pointer border border-gray-300 rounded p-1 hover:border-orange-500 transition-colors"
+                             title="Cliquer pour copier">
+                    </div>
+                </div>
+
+                <p class="text-xs text-gray-500 text-center italic">Cliquez sur une icône pour copier le tampon IA correspondant dans votre presse-papiers</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer fixe -->
+    <footer class="footer">
+        <div class="footer-content">
+            <span>Collège ND de Dinant - 2025</span>
+            <img src="https://drive.google.com/thumbnail?id=17m5J5zlV1SrLhJeX8JBzK2QZMWwFgXgf&sz=w500" alt="Logo PedagokIT" style="height: 40px; width: auto;">
+        </div>
+    </footer>
+
+    <script src="sidepanel.js"></script>
+</body>
+</html>

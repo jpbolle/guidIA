@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide des Pratiques de l'IA - FWB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-xl p-6 md:p-10">
+        <header class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Guide des Pratiques de l'IA</h1>
+            <p class="text-lg text-gray-600">iCollège ND de Dinant</p>
+            <p class="mt-4 text-sm text-gray-500 italic">Sélectionnez une matière pour découvrir les compétences et pratiques associées.</p>
+        </header>
+
+        <div class="mb-8">
+            <label for="matiere-select" class="block text-lg font-semibold text-gray-700 mb-3">Choisissez une matière :</label>
+            <select id="matiere-select" class="w-full md:w-96 mx-auto block p-4 text-lg border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                <option value="">-- Sélectionnez une matière --</option>
+            </select>
+        </div>
+
+        <div id="results-container" class="hidden">
+            <div class="bg-gray-50 rounded-xl shadow-inner p-6">
+                <h2 id="selected-matiere" class="text-2xl font-bold text-gray-800 mb-6 text-center"></h2>
+               
+                <div id="competences-container" class="space-y-6">
+                </div>
+            </div>
+        </div>
+
+        <div id="loading-message" class="text-center text-gray-500">
+            Chargement des données...
+        </div>
+
+        <div id="error-message" class="hidden text-center text-red-500">
+        </div>
+
+    </div>
+
+    <script>
+        // ======================================================================================================
+        // IMPORTANT: Remplacez cette URL par votre URL de déploiement actuelle
+        // ======================================================================================================
+        
+        // URL de base de votre déploiement (SANS le paramètre action)
+        const BASE_URL = 'https://script.google.com/macros/s/AKfycbx1m_z15VP9U0z1Z6q357UU1LqkWoFezZrjCNbjm83ll59KH-3P0QL5xOanuiFyCpU8FQ/exec';
+        
+        // URL pour récupérer les données
+        const SCRIPT_URL = BASE_URL + '?action=getData';
+
+        let allData = [];
+       
+        const matiereSelect = document.getElementById('matiere-select');
+        const resultsContainer = document.getElementById('results-container');
+        const selectedMatiereTitle = document.getElementById('selected-matiere');
+        const competencesContainer = document.getElementById('competences-container');
+        const loadingMessage = document.getElementById('loading-message');
+        const errorMessage = document.getElementById('error-message');
+
+        // Fonction pour charger les données depuis le Google Sheet
+async function loadData() {
+    try {
+        loadingMessage.style.display = 'block';
+        errorMessage.classList.add('hidden');
+        
+        // Utiliser google.script.run au lieu de fetch
+        google.script.run
+            .withSuccessHandler(function(data) {
+                allData = data;
+                populateMatiereSelect();
+                loadingMessage.style.display = 'none';
+            })
+            .withFailureHandler(function(error) {
+                console.error('Erreur lors du chargement:', error);
+                loadingMessage.style.display = 'none';
+                errorMessage.textContent = `Erreur lors du chargement des données : ${error.message}`;
+                errorMessage.classList.remove('hidden');
+            })
+            .getDataForWeb(); // Nouvelle fonction à créer dans Code.gs
+            
+    } catch (error) {
+        console.error('Erreur lors du chargement:', error);
+        loadingMessage.style.display = 'none';
+        errorMessage.textContent = `Erreur lors du chargement des données : ${error.message}`;
+        errorMessage.classList.remove('hidden');
+    }
+}
+
+        // Fonction pour peupler le menu déroulant avec les matières
+        function populateMatiereSelect() {
+            const matieres = [...new Set(allData.map(row => row.matiere))];
+            
+            matieres.forEach(matiere => {
+                const option = document.createElement('option');
+                option.value = matiere;
+                option.textContent = matiere;
+                matiereSelect.appendChild(option);
+            });
+        }
+
+        // Fonction pour afficher les compétences d'une matière
+        function displayCompetences(matiere) {
+            if (!matiere) {
+                resultsContainer.classList.add('hidden');
+                return;
+            }
+
+            selectedMatiereTitle.textContent = matiere;
+           
+            // Filtrer les données pour la matière sélectionnée
+            const competencesData = allData.filter(row => row.matiere === matiere);
+           
+            // Grouper par compétence
+            const competencesGrouped = {};
+            competencesData.forEach(row => {
+                if (!competencesGrouped[row.competence]) {
+                    competencesGrouped[row.competence] = {
+                        autorisees: [],
+                        interdites: []
+                    };
+                }
+               
+                if (row.pratiques_autorisees) {
+                    const autorisees = row.pratiques_autorisees.split('\n').filter(p => p.trim());
+                    competencesGrouped[row.competence].autorisees.push(...autorisees);
+                }
+               
+                if (row.pratiques_interdites) {
+                    const interdites = row.pratiques_interdites.split('\n').filter(p => p.trim());
+                    competencesGrouped[row.competence].interdites.push(...interdites);
+                }
+            });
+
+            // Générer le HTML pour chaque compétence
+            competencesContainer.innerHTML = '';
+           
+            // Vérifier s'il y a des compétences pour cette matière
+            if (Object.keys(competencesGrouped).length === 0) {
+                competencesContainer.innerHTML = `
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
+                        <h3 class="text-lg font-semibold text-yellow-800 mb-2">Aucune compétence définie</h3>
+                        <p class="text-yellow-700">Cette matière ne contient pas encore de compétences ou de pratiques spécifiques dans le guide.</p>
+                    </div>
+                `;
+                resultsContainer.classList.remove('hidden');
+                return;
+            }
+           
+            Object.entries(competencesGrouped).forEach(([competence, pratiques]) => {
+                const competenceHtml = `
+                    <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+                        <div class="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
+                            <h3 class="text-xl font-bold text-white">${competence}</h3>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="flex items-center text-lg font-bold text-green-700 mb-4">
+                                        <span class="bg-green-100 rounded-full p-2 mr-3 flex-shrink-0">
+                                            <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        </span>
+                                        Pratiques Autorisées
+                                    </h4>
+                                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                                        ${pratiques.autorisees.map(p => `<li class="leading-relaxed">${p}</li>`).join('')}
+                                    </ul>
+                                    ${pratiques.autorisees.length === 0 ? '<p class="text-gray-500 italic">Aucune pratique spécifiquement autorisée listée.</p>' : ''}
+                                </div>
+                               
+                                <div>
+                                    <h4 class="flex items-center text-lg font-bold text-red-700 mb-4">
+                                        <span class="bg-red-100 rounded-full p-2 mr-3 flex-shrink-0">
+                                            <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        </span>
+                                        Pratiques Interdites
+                                    </h4>
+                                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                                        ${pratiques.interdites.map(p => `<li class="leading-relaxed">${p}</li>`).join('')}
+                                    </ul>
+                                    ${pratiques.interdites.length === 0 ? '<p class="text-gray-500 italic">Aucune pratique spécifiquement interdite listée.</p>' : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                competencesContainer.insertAdjacentHTML('beforeend', competenceHtml);
+            });
+
+            resultsContainer.classList.remove('hidden');
+        }
+
+        // Gestionnaire d'événement pour le changement de matière
+        matiereSelect.addEventListener('change', (e) => {
+            displayCompetences(e.target.value);
+        });
+
+        // Charger les données au démarrage
+        document.addEventListener('DOMContentLoaded', loadData);
+
+
+
+ 
+    </script>
+</body>
+</html>

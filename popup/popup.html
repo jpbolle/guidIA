@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuidIA</title>
+    <style>
+        body {
+            width: 300px;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: white;
+            color: #333;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            background: #007c75;
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin: -20px -20px 20px -20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 0;
+        }
+
+        .description-text {
+            font-size: 14px;
+            color: #6c757d;
+            line-height: 1.4;
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #f66d00;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #e55a00;
+            transform: translateY(-1px);
+        }
+
+
+        .footer {
+            text-align: center;
+            font-size: 10px;
+            color: #007c75;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">🤖 GuidIA</div>
+        <div class="subtitle">Guide des Pratiques de l'IA</div>
+    </div>
+
+    <div class="description-text">
+        Découvre la charte des bonnes pratiques ou utilise le Guide pour tes travaux...
+    </div>
+
+    <div class="action-buttons">
+        <button class="btn btn-primary" id="charteButton">
+            📃 Lire la charte IA
+        </button>
+        <button class="btn btn-primary" id="openPanel">
+            📋 Utiliser le Guide IA
+        </button>
+    </div>
+
+    <div class="footer">
+        Collège ND de Dinant - 2025
+    </div>
+
+
+    <script src="popup.js"></script>
+</body>
+</html>
