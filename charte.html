@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charte des Usages numériques et IA - Collège ND de Dinant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+            padding-top: 180px; /* Espace pour header fixe plus grand avec onglets */
+            padding-bottom: 80px; /* Espace pour footer fixe */
+        }
+
+        .header {
+            background: #f66d00;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .header-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .header-tab {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .header-tab:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .header-tab.active {
+            background: white;
+            color: #f66d00;
+            border: 2px solid white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .charte-image {
+            width: 100%;
+            max-width: 800px;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            margin: 30px auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+
+        .content {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            min-height: 400px;
+            margin-top: 30px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .construction-message {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            padding: 60px 20px;
+            font-size: 18px;
+        }
+
+        .construction-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .close-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .close-button:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1);
+        }
+
+        .footer {
+            background: #007c75;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        h2 {
+            color: #f66d00;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        h3 {
+            color: #007c75;
+            margin: 20px 0 15px 0;
+            font-size: 18px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        ul {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .references-list {
+            max-width: 100%;
+        }
+
+        .reference-item {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #007c75;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .reference-item p {
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .reference-item a {
+            color: #007c75;
+            text-decoration: none;
+            word-break: break-all;
+            font-weight: 500;
+        }
+
+        .reference-item a:hover {
+            color: #f66d00;
+            text-decoration: underline;
+        }
+
+        .postscriptum {
+            text-align: right;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+            font-size: 12px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <button class="close-button" id="closeButton">×</button>
+
+    <div class="header">
+        <div class="container">
+            <h1>🤖 Charte des Usages numériques et IA</h1>
+            <p class="subtitle">Collège Notre-Dame de Dinant</p>
+            <div class="header-tabs">
+                <button class="header-tab tab active" data-tab="eleves">Charte des élèves</button>
+                <button class="header-tab tab" data-tab="professeurs">Charte des professeurs</button>
+                <button class="header-tab tab" data-tab="references">Références bibliographiques</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+
+        <div class="content">
+            <div id="eleves" class="tab-content active">
+                <img src="https://drive.google.com/thumbnail?id=1QqbCa1R7aEpHEoayUqqEL55GfBT5hORo&sz=w1000"
+                     alt="Charte des élèves - Collège ND de Dinant"
+                     style="width: 100%; max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            </div>
+
+            <div id="professeurs" class="tab-content">
+                <div class="construction-message">
+                    <div class="construction-icon">🚧</div>
+                    <p>Section en construction</p>
+                    <small>Cette section sera bientôt disponible</small>
+                </div>
+            </div>
+
+            <div id="references" class="tab-content">
+                <h2>📚 Références bibliographiques</h2>
+                <div class="references-list">
+                    <div class="reference-item">
+                        <p><strong>Barreau, Antonin.</strong> (s.d.). Charte d'utilisation de l'IA (veille numérique). Consultable à <a href="https://obsidian-bit-ac7.notion.site/Charte-d-utilisation-de-l-IA-1b4fa5fdbf558019acc2ca01965bb352" target="_blank">https://obsidian-bit-ac7.notion.site/Charte-d-utilisation-de-l-IA-1b4fa5fdbf558019acc2ca01965bb352</a></p>
+                    </div>
+
+                    <div class="reference-item">
+                        <p><strong>Barreau, Antonin.</strong> (s.d.). Chartes pour son école (HEC Montréal, Le guide d'intégration de l'IAG pour les activités d'enseignement et d'évaluation). HEC Montréal. <a href="https://enseigner.hec.ca/outils/spectre-dintegration-de-lia-activites-enseignement-evaluation/" target="_blank">https://enseigner.hec.ca/outils/spectre-dintegration-de-lia-activites-enseignement-evaluation/</a></p>
+                    </div>
+
+                    <div class="reference-item">
+                        <p><strong>Duguay, S.</strong> (2024). Guide pour une approche réflexive de l'IA en éducation (avec la collaboration de Audrey Miller ; ill. Laurie Couture). <a href="https://bit.ly/postures/A" target="_blank">https://bit.ly/postures/A</a></p>
+                    </div>
+
+                    <div class="reference-item">
+                        <p><strong>Peters, Martine.</strong> (2021). Modèle sur les stratégies de créacollage numérique. <a href="https://mpeters.uqo.ca/modele-sur-les-strategies-de-creacollage-numerique/" target="_blank">https://mpeters.uqo.ca/modele-sur-les-strategies-de-creacollage-numerique/</a></p>
+                    </div>
+                </div>
+
+                <div class="postscriptum">
+                    <em>Merci à Antonin Barreau pour la veille numérique dont j'ai profité...</em>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <span>2025 - Collège Notre-Dame de Dinant - asbl </span>
+                <img src="https://drive.google.com/thumbnail?id=17m5J5zlV1SrLhJeX8JBzK2QZMWwFgXgf&sz=w500" alt="Logo PedagokIT" style="height: 40px; width: auto;">
+            </div>
+        </div>
+    </div>
+
+    <script src="charte.js"></script>
+</body>
+</html>

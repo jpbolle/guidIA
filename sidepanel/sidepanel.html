@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuidIA - Panneau Latéral</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- En-tête fixe -->
+    <header class="header">
+        <div class="px-4 py-3">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h1 class="text-xl font-bold text-white">🤖 GuidIA</h1>
+                    <p class="text-white text-sm opacity-80">Cadre des Usages IA et numériques</p>
+                </div>
+                <div class="text-white text-xs opacity-70">
+                    CNDD
+                </div>
+            </div>
+            
+            <!-- Navigation par onglets -->
+            <nav class="relative">
+                <div class="flex space-x-0">
+                    <button class="tab-button active flex-1 py-3 px-4 text-white font-medium text-sm rounded-t-lg relative"
+                            data-tab="charte">
+                        📋 Pratiques IA
+                    </button>
+                    <button class="tab-button flex-1 py-3 px-4 text-white font-medium text-sm rounded-t-lg relative"
+                            data-tab="code">
+                        ⚖️ Code d'usage
+                    </button>
+                    <button class="tab-button flex-1 py-3 px-4 text-white font-medium text-sm rounded-t-lg relative"
+                            data-tab="referencement">
+                        📚 Le bibliographe
+                    </button>
+                </div>
+                <div class="tab-indicator" id="tabIndicator"></div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contenu des onglets -->
+    <main class="tab-content">
+        <!-- Onglet Charte IA -->
+        <div id="charte" class="tab-pane active">
+            <div class="p-4">
+                <!-- Citation mise en avant -->
+                <div class="mb-6 bg-white rounded-lg shadow-sm border-2 border-green-500 p-4 text-center">
+                    <p class="text-lg font-bold text-green-700">💡 L'IA peut t'assister dans tes tâches, dès qu'elle fait le travail à ta place, elle te remplace...</p>
+                </div>
+
+                <div class="mb-6">
+                    <div class="mb-2">
+                        <label for="matiere-select" class="block text-sm font-semibold text-gray-700">
+                            Choisissez une matière :
+                        </label>
+                    </div>
+                    <select id="matiere-select" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white text-sm">
+                        <option value="">-- Sélectionnez une matière --</option>
+                    </select>
+                </div>
+
+                <div id="results-container" class="hidden">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                        <h2 id="selected-matiere" class="text-lg font-bold text-gray-800 mb-4 text-center border-b border-gray-300 pb-2"></h2>
+                        <div id="competences-container" class="space-y-4">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="loading-message" class="text-center text-gray-500 py-8">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500 mx-auto mb-2"></div>
+                    Chargement des données...
+                </div>
+
+                <div id="error-message" class="hidden text-center text-red-500 py-8 bg-red-50 rounded-lg border border-red-200">
+                </div>
+            </div>
+        </div>
+
+        <!-- Onglet Référencement -->
+        <div id="referencement" class="tab-pane">
+            <div class="ref-container">
+                <!-- Aperçu de la référence (fixe) -->
+                <div class="ref-preview-fixed">
+                    <h3 class="ref-section-title">👁️ Aperçu de la référence (éditable)</h3>
+                    <div class="ref-preview-box-container">
+                        <div class="ref-preview-box" id="preview" contenteditable="true">
+                            <em>Commencez à remplir les champs pour voir la référence apparaître...</em>
+                        </div>
+                        <div class="ref-preview-actions">
+                            <button class="ref-btn-small ref-btn-copy" id="addRefBtn" title="Ajouter à la liste">+</button>
+                            <button class="ref-btn-small ref-btn-delete" id="clearRefBtn" title="Effacer">×</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenu scrollable -->
+                <div class="ref-scrollable-content">
+                    <!-- Informations de la source -->
+                    <div class="ref-form-section">
+                        <h3 class="ref-section-title">📝 Informations sur la source</h3>
+
+                        <div class="ref-form-group">
+                            <label for="sourceType">Type de source</label>
+                            <select id="sourceType" class="ref-select">
+                                <option value="book">Livre</option>
+                                <option value="article">Article de journal</option>
+                                <option value="website" selected>Site web</option>
+                                <option value="chapter">Chapitre de livre</option>
+                                <option value="thesis">Thèse/Mémoire</option>
+                            </select>
+                            <button class="ref-btn ref-btn-primary" id="autoFillWebBtn" style="display: none; margin-top: 10px;">🌐 Remplir depuis la page active</button>
+                        </div>
+
+                        <div class="ref-form-group">
+                            <label for="authors">Auteur(s)</label>
+                            <input type="text" id="authors" class="ref-input" placeholder="Nom, Prén. (séparer par des points-virgules)">
+                            <div class="ref-info-text">Ex: Dupont, J.; Martin, P. L.</div>
+                        </div>
+
+                        <div class="ref-form-group">
+                            <label for="year">Année de publication</label>
+                            <input type="text" id="year" class="ref-input" placeholder="2024">
+                        </div>
+
+                        <div class="ref-form-group">
+                            <label for="title">Titre</label>
+                            <input type="text" id="title" class="ref-input" placeholder="Titre de l'ouvrage">
+                        </div>
+
+                        <div id="dynamicFields"></div>
+                    </div>
+
+                    <!-- Liste des références -->
+                    <div class="ref-list-section">
+                        <h3 class="ref-section-title">📋 Liste des références</h3>
+                        <div id="referencesList">
+                            <p class="ref-info-text">Aucune référence ajoutée. Ajoutez des références pour les voir apparaître ici.</p>
+                        </div>
+
+                        <div class="ref-export-buttons">
+                            <button class="ref-btn ref-btn-primary" id="exportWordBtn">📄 Export Word</button>
+                            <button class="ref-btn ref-btn-primary" id="exportCSVBtn">📊 Export CSV</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Onglet Code d'usage -->
+        <div id="code" class="tab-pane">
+            <div class="p-4">
+                <h2 class="text-lg font-bold text-orange-700 mb-4 border-b border-gray-300 pb-2">Cadrages du professeur</h2>
+
+                <p class="text-sm text-gray-700 mb-2">Tes professeurs peuvent te permettre d'utiliser l'IA dans tes travaux. Trois icônes sont possibles:</p>
+
+                <div class="mb-2">
+                    <img src="https://drive.google.com/thumbnail?id=1TWnWO7_6KF8l_i4inGzLn6kIehchN3Sy&sz=w1000"
+                         alt="Cadrages des usages IA"
+                         class="w-full max-w-full h-auto rounded-lg shadow-sm border border-gray-200">
+                </div>
+
+                <ul class="list-disc text-sm text-gray-700 space-y-2 mb-6 ml-6 pl-4">
+                    <li><strong>Non recours à l'IA:</strong> dans ce cas, tu es invité à ne pas utiliser pour des raisons pédagogiques l'IA</li>
+                    <li><strong>Aide de l'IA:</strong> dans ce cas, tu peux l'utiliser selon les consignes ou non du professeur</li>
+                    <li><strong>Généré par l'IA:</strong> tu peux demander à l'IA de faire une tâche à ta place (usage rare...)</li>
+                </ul>
+
+                <hr class="border-gray-300 mb-4">
+                <br>
+                <br>
+                <h3 class="text-md font-bold text-orange-700 mb-3 border-b border-gray-300 pb-2">Tampons de l'IA</h3>
+
+                <p class="text-sm text-gray-700 mb-4">Que l'usage de l'IA soit autorisé ou non, tu dois désormais te montrer transparent.e et indiquer si tu as utilisé l'IA ou non et quel a été ton usage de l'IA (aide à la reformulation, aide à la compréhension, etc.)</p>
+                <p class="text-sm text-gray-700 mb-4">Pour ce faire, copie-colle l'une des icônes ci-dessous et place-la au bon endroit dans ton travail:</p>
+
+                <div class="flex gap-4 justify-center mb-4">
+                    <div class="text-center">
+                        <img src="https://drive.google.com/thumbnail?id=1Gqede404Yfc7FbgddUUaXhVs5zZFccal&sz=w1000"
+                             alt="Tampon IA non utilisée"
+                             class="tampon-image w-16 h-16 cursor-pointer border border-gray-300 rounded p-1 hover:border-orange-500 transition-colors"
+                             title="Cliquer pour copier">
+                    </div>
+                    <div class="text-center">
+                        <img src="https://drive.google.com/thumbnail?id=1atLNR61DocVz-f2gJ5r14CpeeqSHJTl-&sz=w1000"
+                             alt="Tampon IA aide"
+                             class="tampon-image w-16 h-16 cursor-pointer border border-gray-300 rounded p-1 hover:border-orange-500 transition-colors"
+                             title="Cliquer pour copier">
+                    </div>
+                    <div class="text-center">
+                        <img src="https://drive.google.com/thumbnail?id=1a3Pc6YoZoLLZ0DkBWw2cMJ0LicGtkfCC&sz=w1000"
+                             alt="Tampon IA généré"
+                             class="tampon-image w-16 h-16 cursor-pointer border border-gray-300 rounded p-1 hover:border-orange-500 transition-colors"
+                             title="Cliquer pour copier">
+                    </div>
+                </div>
+
+                <p class="text-xs text-gray-500 text-center italic">Cliquez sur une icône pour copier le tampon IA correspondant dans votre presse-papiers</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer fixe -->
+    <footer class="footer">
+        <div class="footer-content">
+            <span>Collège ND de Dinant - 2025 - version 2.0</span>
+            <img src="https://drive.google.com/thumbnail?id=17m5J5zlV1SrLhJeX8JBzK2QZMWwFgXgf&sz=w500" alt="Logo PedagokIT" style="height: 40px; width: auto;">
+        </div>
+    </footer>
+
+    <script src="sidepanel.js"></script>
+</body>
+</html>
